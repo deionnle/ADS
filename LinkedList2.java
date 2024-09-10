@@ -103,31 +103,6 @@ public class LinkedList2 {
             }
             current = current.next;
         }
-//        if (head == null) return;
-//        while (head.value == _value) {
-//            head = head.next;
-//            head.prev = null;
-//            if (head == null) {
-//                tail = null;
-//            }
-//        }
-//
-//        Node prev = null;
-//        Node current = head;
-//        while (current != null) {
-//            if (current.value == _value) {
-//                if (prev != null) {
-//                    prev.next = current.next;
-//                }
-//                if (current.next != null) {
-//                    current.next.prev = prev;
-//                } else {
-//                    tail = prev;
-//                }
-//            }
-//            prev = current;
-//            current = current.next;
-//        }
     }
 
     public void clear() {
