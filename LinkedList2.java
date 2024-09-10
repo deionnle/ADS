@@ -78,9 +78,13 @@ public class LinkedList2 {
 
         while (head != null && head.value == _value) {
             head = head.next;
+            if (head != null) {
+                head.prev = null;
+            }
         }
         if (head == null) {
             tail = null;
+            return;
         }
 
         Node prev = head;
@@ -89,7 +93,9 @@ public class LinkedList2 {
         while (current != null) {
             if (current.value == _value) {
                 prev.next = current.next;
-                if (current.next == null) {
+                if (current.next != null) {
+                    current.next.prev = prev;
+                } else {
                     tail = prev;
                 }
             } else {
@@ -97,6 +103,31 @@ public class LinkedList2 {
             }
             current = current.next;
         }
+//        if (head == null) return;
+//        while (head.value == _value) {
+//            head = head.next;
+//            head.prev = null;
+//            if (head == null) {
+//                tail = null;
+//            }
+//        }
+//
+//        Node prev = null;
+//        Node current = head;
+//        while (current != null) {
+//            if (current.value == _value) {
+//                if (prev != null) {
+//                    prev.next = current.next;
+//                }
+//                if (current.next != null) {
+//                    current.next.prev = prev;
+//                } else {
+//                    tail = prev;
+//                }
+//            }
+//            prev = current;
+//            current = current.next;
+//        }
     }
 
     public void clear() {
