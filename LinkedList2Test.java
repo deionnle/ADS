@@ -16,17 +16,36 @@ public class LinkedList2Test {
     }
 
     @Test
+    public void removeHeadTest() {
+        LinkedList2 s_list = new LinkedList2();
+        s_list.addInTail(new Node(1));
+        s_list.addInTail(new Node(2));
+        assertEquals(true,s_list.remove(1));
+    }
+
+    @Test
+    public void removeTailTest() {
+        LinkedList2 s_list = new LinkedList2();
+        s_list.addInTail(new Node(1));
+        s_list.addInTail(new Node(2));
+        assertEquals(true,s_list.remove(2));
+    }
+
+
+    @Test
     public void removeAllValuesTest() {
         LinkedList2 s_list = new LinkedList2();
         s_list.addInTail(new Node(3));
         s_list.addInTail(new Node(3));
         s_list.addInTail(new Node(2));
         s_list.addInTail(new Node(1));
+        s_list.addInTail(new Node(3));
+        s_list.addInTail(new Node(3));
         s_list.addInTail(new Node(13));
         s_list.addInTail(new Node(5));
         s_list.addInTail(new Node(3));
         s_list.addInTail(new Node(3));
-       // s_list.addInTail(new Node(1));
+        s_list.addInTail(new Node(1));
         s_list.removeAll(3);
         ArrayList<Node> nodes = new ArrayList<>();
         assertEquals(nodes,s_list.findAll(3));

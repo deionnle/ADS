@@ -50,6 +50,9 @@ public class LinkedList2 {
             if (head == null) {
                 tail = null;
             }
+            else {
+                head.prev = null;
+            }
             return true;
         }
 
