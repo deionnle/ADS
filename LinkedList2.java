@@ -150,16 +150,105 @@ public class LinkedList2 {
             tail = _nodeToInsert;
         }
     }
+
+    public void reverse() {
+        Node current = head;
+        Node temp = null;
+        tail = head;
+
+        while (current != null) {
+            temp = current.prev;
+            current.prev = current.next;
+            current.next = temp;
+
+            current = current.prev;
+        }
+
+        if (temp != null) {
+            head = temp.prev;
+        }
+    }
+
+    public boolean cycle() {
+        if (head == null) return false;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void sort() {
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        boolean bool = true;
+        while (bool) {
+            bool = false;
+            Node current = head;
+
+            while (current != null && current.next != null) {
+                if (current.value > current.next.value) {
+                    int temp = current.value;
+                    current.value = current.next.value;
+                    current.next.value = temp;
+
+                    bool = true;
+                }
+                current = current.next;
+            }
+        }
+    }
+
+    public static LinkedList2 mergeList(LinkedList2 list1, LinkedList2 list2) {
+        list1.sort();
+        list2.sort();
+        LinkedList2 resultList = new LinkedList2();
+        Node node1 = list1.head;
+        Node node2 = list2.head;
+
+        while (node1 != null && node2 != null) {
+            if (node1.value <= node2.value) {
+                resultList.addInTail(new Node(node1.value));
+                node1 = node1.next;
+            } else {
+                resultList.addInTail(new Node(node2.value));
+                node2 = node2.next;
+            }
+        }
+
+        while (node1 != null) {
+            resultList.addInTail(new Node(node1.value));
+            node1 = node1.next;
+        }
+
+        while (node2 != null) {
+            resultList.addInTail(new Node(node2.value));
+            node2 = node2.next;
+        }
+        return resultList;
+    }
 }
 
-    class Node {
-        public int value;
-        public Node next;
-        public Node prev;
+class Node {
+    public int value;
+    public Node next;
+    public Node prev;
 
-        public Node(int _value) {
+    public Node(int _value) {
             value = _value;
             next = null;
             prev = null;
-        }
     }
+}
+
+
