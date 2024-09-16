@@ -226,14 +226,14 @@ public class LinkedList2 {
             }
         }
 
-        while (node1 != null) {
-            resultList.addInTail(new Node(node1.value));
-            node1 = node1.next;
-        }
-
-        while (node2 != null) {
-            resultList.addInTail(new Node(node2.value));
-            node2 = node2.next;
+        while (node1 != null || node2 != null) {
+            if (node2 == null) {
+                resultList.addInTail(new Node(node1.value));
+                node1 = node1.next;
+            } else {
+                resultList.addInTail(new Node(node2.value));
+                node2 = node2.next;
+            }
         }
         return resultList;
     }
