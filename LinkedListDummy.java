@@ -2,24 +2,26 @@ import java.util.ArrayList;
 
 public class LinkedListDummy {
 
-    private Node dummy;
+    public Node head;
+    public Node tail;
 
     public LinkedListDummy() {
-        dummy = new Node(0);
-        dummy.next = dummy;
-        dummy.prev = dummy;
+        head = new Dummy();
+        tail = new Dummy();
+        head.next = tail;
+        tail.prev = head;
     }
 
     public void addInTail(Node _item) {
-        _item.next = dummy;
-        _item.prev = dummy.prev;
-        dummy.prev.next = _item;
-        dummy.prev = _item;
+        _item.prev = tail.prev;
+        _item.next = tail;
+        tail.prev.next = _item;
+        tail.prev = _item;
     }
 
     public Node find(int _value) {
-        Node current = dummy.next;
-        while (current != dummy) {
+        Node current = head.next;
+        while (!(current instanceof Dummy)) {
             if (current.value == _value)
                 return current;
             current = current.next;
@@ -29,8 +31,8 @@ public class LinkedListDummy {
 
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> result = new ArrayList<>();
-        Node current = dummy.next;
-        while (current != dummy) {
+        Node current = head.next;
+        while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 result.add(current);
             }
@@ -40,8 +42,8 @@ public class LinkedListDummy {
     }
 
     public boolean remove(int _value) {
-        Node current = dummy.next;
-        while (current != dummy) {
+        Node current = head.next;
+        while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 current.prev.next = current.next;
                 current.next.prev = current.prev;
@@ -53,8 +55,8 @@ public class LinkedListDummy {
     }
 
     public void removeAll(int _value) {
-        Node current = dummy.next;
-        while (current != dummy) {
+        Node current = head.next;
+        while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 current.prev.next = current.next;
                 current.next.prev = current.prev;
@@ -64,14 +66,14 @@ public class LinkedListDummy {
     }
 
     public void clear() {
-        dummy.next = dummy;
-        dummy.prev = dummy;
+        head.next = tail;
+        tail.prev = head;
     }
 
     public int count() {
         int count = 0;
-        Node current = dummy.next;
-        while (current != dummy) {
+        Node current = head.next;
+        while (!(current instanceof Dummy)) {
             count++;
             current = current.next;
         }
@@ -90,3 +92,13 @@ class Node {
         prev = null;
     }
 }
+
+class Dummy extends Node {
+    public Dummy() {
+        super(0);
+        this.next = this;
+        this.prev = this;
+    }
+}
+
+
