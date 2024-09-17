@@ -2,25 +2,21 @@ import java.util.ArrayList;
 
 public class LinkedListDummy {
 
-    public Node head;
-    public Node tail;
+    private Node dummy;
 
     public LinkedListDummy() {
-        head = new Dummy();
-        tail = new Dummy();
-        head.next = tail;
-        tail.prev = head;
+        dummy = new Dummy();
     }
 
     public void addInTail(Node _item) {
-        _item.prev = tail.prev;
-        _item.next = tail;
-        tail.prev.next = _item;
-        tail.prev = _item;
+        _item.prev = dummy.prev;
+        _item.next = dummy;
+        dummy.prev.next = _item;
+        dummy.prev = _item;
     }
 
     public Node find(int _value) {
-        Node current = head.next;
+        Node current = dummy.next;
         while (!(current instanceof Dummy)) {
             if (current.value == _value)
                 return current;
@@ -31,7 +27,7 @@ public class LinkedListDummy {
 
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> result = new ArrayList<>();
-        Node current = head.next;
+        Node current = dummy.next;
         while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 result.add(current);
@@ -42,7 +38,7 @@ public class LinkedListDummy {
     }
 
     public boolean remove(int _value) {
-        Node current = head.next;
+        Node current = dummy.next;
         while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 current.prev.next = current.next;
@@ -55,7 +51,7 @@ public class LinkedListDummy {
     }
 
     public void removeAll(int _value) {
-        Node current = head.next;
+        Node current = dummy.next;
         while (!(current instanceof Dummy)) {
             if (current.value == _value) {
                 current.prev.next = current.next;
@@ -66,13 +62,13 @@ public class LinkedListDummy {
     }
 
     public void clear() {
-        head.next = tail;
-        tail.prev = head;
+        dummy.next = dummy;
+        dummy.prev = dummy;
     }
 
     public int count() {
         int count = 0;
-        Node current = head.next;
+        Node current = dummy.next;
         while (!(current instanceof Dummy)) {
             count++;
             current = current.next;
