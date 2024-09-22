@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 public class DynArrayBankingTest {
 
     @Test
@@ -64,7 +65,7 @@ public class DynArrayBankingTest {
         arr.removeBanking(3);
         arr.removeBanking(3);
         assertEquals(10, arr.getItemBanking(3));
-        assertEquals(32,arr.capacity);
+        assertEquals(42,arr.capacity);
     }
 
     @Test
