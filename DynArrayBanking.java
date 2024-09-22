@@ -1,18 +1,16 @@
 import java.lang.reflect.Array;
 
 public class DynArrayBanking<T> {
-    public T [] array;
+    public T[] array;
     public int count;
     public int capacity;
     public int credits;
-    public boolean flag;
-    Class clazz;
+    Class<T> clazz;
 
-    public DynArrayBanking(Class clz) {
+    public DynArrayBanking(Class<T> clz) {
         clazz = clz;
         count = 0;
         credits = 0;
-        flag = false;
         makeArrayBanking(16);
     }
 
@@ -20,6 +18,7 @@ public class DynArrayBanking<T> {
         T[] newArray = (T[]) Array.newInstance(this.clazz, new_capacity);
         if (array != null) {
             System.arraycopy(array,0,newArray,0,count);
+            credits -= count;
         }
         array = newArray;
         capacity = new_capacity;
@@ -34,20 +33,13 @@ public class DynArrayBanking<T> {
 
     public void appendBanking(T itm) {
         if (count == capacity) {
-            int newCredits = capacity * 3;
-
-            if (credits >= newCredits) {
-                makeArrayBanking(capacity * 2);
-                credits -= newCredits;
-                flag = false;
-            } else {
-                flag = true;
+            if (credits < count) {
+                throw new IllegalStateException();
             }
+            makeArrayBanking(capacity * 2);
         }
-        if (!flag) {
-            array[count++] = itm;
-        }
-        credits += 3;
+        array[count++] = itm;
+        credits += 2;
     }
 
     public void insertBanking(T itm, int index) {
@@ -55,43 +47,32 @@ public class DynArrayBanking<T> {
             throw new IndexOutOfBoundsException("Invalid index");
         }
         if (count == capacity) {
-            int newCredits = capacity * 3;
-
-            if (credits >= newCredits) {
-                makeArrayBanking(capacity * 2);
-                credits -= newCredits;
-                flag = false;
-            } else {
-                flag = true;
+            if (credits < count) {
+                throw new IllegalStateException();
             }
+            makeArrayBanking(capacity * 2);
         }
-        if (!flag) {
-            System.arraycopy(array, index, array, index + 1, count - index);
-            array[index] = itm;
-            count++;
-        }
-        credits += 3;
+        System.arraycopy(array, index, array, index + 1, count - index);
+        array[index] = itm;
+        count++;
+        credits += 2;
     }
 
     public void removeBanking(int index) {
-        if (index < 0 || index > count) {
+        if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
-        System.arraycopy(array,index + 1, array, index, count - index - 1);
+        System.arraycopy(array, index + 1, array, index, count - index - 1);
         count--;
         array[count] = null;
-        //
-        credits += 3;
-        if (count <= capacity / 2 && capacity > 16) {
-            int new_capacity = (int) (capacity / 1.5);
-            new_capacity = Math.max(new_capacity, 16);
-            int newCredits = count * 3;
+        credits += 1;
 
-            if (credits >= newCredits) {
-                makeArrayBanking(new_capacity);
-                credits -= newCredits;
-            }
+        if (count >= capacity / 2 || capacity <= 16) return;
+        int new_capacity = (int) (capacity / 1.5);
+        if (new_capacity < 16) {
+            new_capacity = 16;
         }
+        makeArrayBanking(new_capacity);
     }
 }
 
