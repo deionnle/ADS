@@ -116,6 +116,29 @@ public class Stack<T> {
         }
         return sum / stack.size();
     }
+
+    public int postfix(String s) {
+            Stack<Integer> stack2 = new Stack<>();
+
+            String[] values = s.split(" ");
+
+            for (String val : values) {
+                if (Character.isDigit(val.charAt(0))) {
+                    stack2.push(Integer.parseInt(val));
+                } else if (val.equals("+")) {
+                    int a = stack2.pop();
+                    int b = stack2.pop();
+                    stack2.push(a + b);
+                } else if (val.equals("*")) {
+                    int a = stack2.pop();
+                    int b = stack2.pop();
+                    stack2.push(a * b);
+                } else if (val.equals("=")) {
+                    return stack2.pop();
+                }
+            }
+            return stack2.pop();
+        }
 }
 
 

@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 public class StackTest {
 
     @Test
@@ -108,4 +109,12 @@ public class StackTest {
         assertEquals(0,stack.getMin());
     }
 
+    @Test
+    public void postfixTets() {
+        Stack stack = new Stack();
+        String s = "8 2 + 5 * 9 + =";
+        assertEquals(59,stack.postfix(s));
+        s = "8 2 + 5 * 9 +";
+        assertEquals(59,stack.postfix(s));
+    }
 }
