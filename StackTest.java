@@ -116,5 +116,7 @@ public class StackTest {
         assertEquals(59,stack.postfix(s));
         s = "8 2 + 5 * 9 +";
         assertEquals(59,stack.postfix(s));
+        s = "10 5 / 1 - =";
+        assertEquals(1,stack.postfix(s));
     }
 }

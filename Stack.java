@@ -51,33 +51,28 @@ public class Stack<T> {
         if (!stack.isEmpty()) {
             return stack.getLast();
         }
-        return null; // если стек пустой
+        return null;
     }
 
     public T peek2() {
         if (!stack.isEmpty()) {
             return stack.getFirst();
         }
-        return null; // если стек пустой
+        return null;
     }
 
     public static boolean balance(String str){
         Stack<Character> characterStack = new Stack<>();
+        HashMap<Character, Character> map = new HashMap<>();
+        map.put(')', '(');
+        map.put('}', '{');
+        map.put(']', '[');
 
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
-
-            if (ch == '(' || ch == '{' || ch == '[') {
+        for (char ch : str.toCharArray()) {
+            if (map.containsValue(ch)) {
                 characterStack.push(ch);
-            }
-            else if (ch == ')' || ch == '}' || ch == ']') {
-                if (characterStack.size() == 0) {
+            } else if (map.containsKey(ch) && (characterStack.size() == 0 || characterStack.pop() != map.get(ch))) {
                     return false;
-                }
-                char last = characterStack.pop();
-                if ((ch == ')' && last != '(') || (ch == '}' && last != '{') || (ch == ']' && last != '[')) {
-                    return false;
-                }
             }
         }
         return characterStack.size() == 0;
@@ -133,6 +128,14 @@ public class Stack<T> {
                     int a = stack2.pop();
                     int b = stack2.pop();
                     stack2.push(a * b);
+                } else if (val.equals("-")) {
+                    int a = stack2.pop();
+                    int b = stack2.pop();
+                    stack2.push(b - a);
+                } else if (val.equals("/")) {
+                    int a = stack2.pop();
+                    int b = stack2.pop();
+                    stack2.push(b / a);
                 } else if (val.equals("=")) {
                     return stack2.pop();
                 }
