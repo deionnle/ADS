@@ -1,44 +1,73 @@
 public class DynMatrix<T> {
-    private DynArray<DynArray<T>> rootArray;
+    private DynArray<Object> rootArray;
 
     public DynMatrix() {
-        rootArray = new DynArray<>(DynArray.class);
+        rootArray = new DynArray<>(Object.class);
     }
 
-    public void set(int subArrayIndex, T itm) {
-        if (subArrayIndex >= rootArray.count) {
-            for (int i = rootArray.count; i <= subArrayIndex; i++) {
-                rootArray.append(new DynArray<>(Object.class));
+    public void set(T itm, int... numbers) {
+        DynArray<Object> currentArray = rootArray;
+
+        for (int i = 0; i < numbers.length - 1; i ++) {
+            int index = numbers[i];
+            if (index < currentArray.count) {
+                currentArray = (DynArray<Object>) currentArray.getItem(index);
+                continue;
             }
+            for (int j = currentArray.count; j <= index; j ++) {
+                currentArray.append(new DynArray<>(Object.class));
+            }
+            currentArray = (DynArray<Object>) currentArray.getItem(index);
         }
-
-        DynArray<T> subArray = rootArray.getItem(subArrayIndex);
-        subArray.append(itm);
+        int lastIndex = numbers[numbers.length - 1];
+        for (int j = currentArray.count; j <= lastIndex; j ++) {
+            currentArray.append(null);
+        }
+        currentArray.array[lastIndex] = itm;
     }
 
-    public T get(int subArrayIndex, int valueIndex) {
-        if (subArrayIndex >= rootArray.count) {
+    public T get(int... numbers) {
+        DynArray<Object> currentArray = rootArray;
+
+        for (int i = 0; i < numbers.length - 1; i++) {
+            int index = numbers[i];
+
+            if (index >= currentArray.count) {
+            throw new IndexOutOfBoundsException("Invalid index");
+            }
+            currentArray = (DynArray<Object>) currentArray.getItem(index);
+        }
+
+        int lastIndex = numbers[numbers.length - 1];
+        if (lastIndex >= currentArray.count) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
 
-        DynArray<T> subArray = rootArray.getItem(subArrayIndex);
-        if (valueIndex >= subArray.count) {
-            throw new IndexOutOfBoundsException("Invalid index");
-        }
-
-        return subArray.getItem(valueIndex);
+        return (T) currentArray.getItem(lastIndex);
     }
 
-    public void remove(int subArrayIndex, int valueIndex) {
-        if (subArrayIndex >= rootArray.count) {
+    public void remove(int... numbers) {
+        if (numbers.length == 0) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
 
-        DynArray<T> subArray = rootArray.getItem(subArrayIndex);
-        if (valueIndex >= subArray.count) {
+        DynArray<Object> currentArray = rootArray;
+
+        for (int i = 0; i < numbers.length - 1; i++) {
+            int index = numbers[i];
+
+            if (index >= currentArray.count) {
+                throw new IndexOutOfBoundsException("Invalid index");
+            }
+
+             currentArray = (DynArray<Object>) currentArray.getItem(index);
+        }
+
+        int lastIndex = numbers[numbers.length - 1];
+        if (lastIndex >= currentArray.count) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
-        subArray.remove(valueIndex);
+        currentArray.remove(lastIndex);
     }
 }
 
