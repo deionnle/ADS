@@ -114,28 +114,19 @@ public class Stack<T> {
 
     public int postfix(String s) {
             Stack<Integer> stack2 = new Stack<>();
-
             String[] values = s.split(" ");
 
             for (String val : values) {
                 if (Character.isDigit(val.charAt(0))) {
                     stack2.push(Integer.parseInt(val));
                 } else if (val.equals("+")) {
-                    int a = stack2.pop();
-                    int b = stack2.pop();
-                    stack2.push(a + b);
+                    stack2.push(stack2.pop() + stack2.pop());
                 } else if (val.equals("*")) {
-                    int a = stack2.pop();
-                    int b = stack2.pop();
-                    stack2.push(a * b);
+                    stack2.push(stack2.pop() * stack2.pop());
                 } else if (val.equals("-")) {
-                    int a = stack2.pop();
-                    int b = stack2.pop();
-                    stack2.push(b - a);
+                    stack2.push(stack2.pop() - stack2.pop());
                 } else if (val.equals("/")) {
-                    int a = stack2.pop();
-                    int b = stack2.pop();
-                    stack2.push(b / a);
+                    stack2.push(stack2.pop() / stack2.pop());
                 } else if (val.equals("=")) {
                     return stack2.pop();
                 }
