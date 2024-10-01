@@ -20,8 +20,8 @@ public class Stack<T> {
             T val = stack.removeLast();
             if (val instanceof Number) {
                 double value = ((Number) val).doubleValue();
-                stackSum(value,false);
-                minValue((Number) val,false);
+                stackSum(value, false);
+                minValue((Number) val, false);
             }
             return val;
         }
@@ -34,12 +34,13 @@ public class Stack<T> {
         }
         return null;
     }
+
     public void push(T val) {
         stack.addLast(val);
         if (val instanceof Number) {
             double value = ((Number) val).doubleValue();
-            stackSum(value,true);
-            minValue((Number) val,true);
+            stackSum(value, true);
+            minValue((Number) val, true);
         }
     }
 
@@ -61,7 +62,7 @@ public class Stack<T> {
         return null;
     }
 
-    public static boolean balance(String str){
+    public static boolean balance(String str) {
         Stack<Character> characterStack = new Stack<>();
         HashMap<Character, Character> map = new HashMap<>();
         map.put(')', '(');
@@ -72,18 +73,18 @@ public class Stack<T> {
             if (map.containsValue(ch)) {
                 characterStack.push(ch);
             } else if (map.containsKey(ch) && (characterStack.size() == 0 || characterStack.pop() != map.get(ch))) {
-                    return false;
+                return false;
             }
         }
         return characterStack.size() == 0;
     }
 
     private void stackSum(double val, boolean bool) {
-            if (bool) {
-                sum += val;
-            } else {
-                sum -= val;
-            }
+        if (bool) {
+            sum += val;
+        } else {
+            sum -= val;
+        }
     }
 
     private void minValue(Number val, boolean bool) {
@@ -113,26 +114,40 @@ public class Stack<T> {
     }
 
     public int postfix(String s) {
-            Stack<Integer> stack2 = new Stack<>();
-            String[] values = s.split(" ");
+        Stack<Integer> stack2 = new Stack<>();
+        String[] values = s.split(" ");
 
-            for (String val : values) {
-                if (Character.isDigit(val.charAt(0))) {
-                    stack2.push(Integer.parseInt(val));
-                } else if (val.equals("+")) {
-                    stack2.push(stack2.pop() + stack2.pop());
-                } else if (val.equals("*")) {
-                    stack2.push(stack2.pop() * stack2.pop());
-                } else if (val.equals("-")) {
-                    stack2.push(stack2.pop() - stack2.pop());
-                } else if (val.equals("/")) {
-                    stack2.push(stack2.pop() / stack2.pop());
-                } else if (val.equals("=")) {
-                    return stack2.pop();
-                }
+        for (String val : values) {
+            if (Character.isDigit(val.charAt(0))) {
+                stack2.push(Integer.parseInt(val));
+                continue;
             }
-            return stack2.pop();
+
+            if (val.equals("=")) {
+                return stack2.pop();
+            }
+            if (stack2.size() < 2) {
+                return 0;
+            }
+
+            int a = stack2.pop();
+            int b = stack2.pop();
+
+            if (val.equals("+")) {
+                stack2.push(b + a);
+            }
+            if (val.equals("*")) {
+                stack2.push(b * a);
+            }
+            if (val.equals("-")) {
+                stack2.push(b - a);
+            }
+            if (val.equals("/")) {
+                stack2.push(b / a);
+            }
         }
+        return stack2.pop();
+    }
 }
 
 
