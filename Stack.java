@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class Stack<T> {
     private LinkedList<T> stack;
@@ -117,6 +118,12 @@ public class Stack<T> {
         Stack<Integer> stack2 = new Stack<>();
         String[] values = s.split(" ");
 
+        HashMap<String, BiFunction<Integer, Integer, Integer>> operations = new HashMap<>();
+        operations.put("+", (a, b) -> b + a);
+        operations.put("-", (a, b) -> b - a);
+        operations.put("*", (a, b) -> b * a);
+        operations.put("/", (a, b) -> b / a);
+
         for (String val : values) {
             if (Character.isDigit(val.charAt(0))) {
                 stack2.push(Integer.parseInt(val));
@@ -133,17 +140,8 @@ public class Stack<T> {
             int a = stack2.pop();
             int b = stack2.pop();
 
-            if (val.equals("+")) {
-                stack2.push(b + a);
-            }
-            if (val.equals("*")) {
-                stack2.push(b * a);
-            }
-            if (val.equals("-")) {
-                stack2.push(b - a);
-            }
-            if (val.equals("/")) {
-                stack2.push(b / a);
+            if (operations.containsKey(val)) {
+                stack2.push(operations.get(val).apply(a, b));
             }
         }
         return stack2.pop();
