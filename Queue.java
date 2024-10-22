@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Stack;
 
 public class Queue<T> {
     private ArrayList<T> queue;
@@ -29,6 +30,17 @@ public class Queue<T> {
         for (int i = 0; i < n; i ++) {
             T temp = dequeue();
             enqueue(temp);
+        }
+    }
+
+    public void reverse() {
+        Stack<T> stack = new Stack<>();
+
+        while (!queue.isEmpty()) {
+            stack.push(dequeue());
+        }
+        while (!stack.isEmpty()) {
+            enqueue(stack.pop());
         }
     }
 }
