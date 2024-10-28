@@ -3,27 +3,29 @@ import java.util.*;
 public class Deque<T extends Comparable<T>> {
     private int count;
     private ArrayList<T> deque;
-    private ArrayList<T> minValue;
+    private ArrayList<T> minHead;
+    private ArrayList<T> minTail;
 
     public Deque() {
         deque = new ArrayList<>();
-        minValue = new ArrayList<>();
+        minHead = new ArrayList<>();
+        minTail = new ArrayList<>();
         count = 0;
     }
 
     public void addFront(T item) {
         deque.add(0, item);
         count++;
-        if (minValue.isEmpty() || item.compareTo(getMin()) <= 0) {
-            minValue.add(item);
+        if (minHead.isEmpty() || item.compareTo(getMinHead()) <= 0) {
+            minHead.add(item);
         }
     }
 
     public void addTail(T item) {
         deque.add(item);
         count++;
-        if (minValue.isEmpty() || item.compareTo(getMin()) <= 0) {
-            minValue.add(item);
+        if (minTail.isEmpty() || item.compareTo(getMinTail()) <= 0) {
+            minTail.add(item);
         }
     }
 
@@ -31,8 +33,8 @@ public class Deque<T extends Comparable<T>> {
         if (count > 0) {
             T removed = deque.remove(0);
             count--;
-            if (removed.equals(getMin())) {
-                minValue.remove(minValue.size() - 1);
+            if (!minHead.isEmpty() && removed.equals(getMinHead())) {
+                minHead.remove(minHead.size() - 1);
             }
             return removed;
         }
@@ -43,8 +45,8 @@ public class Deque<T extends Comparable<T>> {
         if (count > 0) {
             T removed = deque.remove(deque.size() - 1);
             count--;
-            if (removed.equals(getMin())) {
-                minValue.remove(minValue.size() - 1);
+            if (!minTail.isEmpty() && removed.equals(getMinTail())) {
+                minTail.remove(minTail.size() - 1);
             }
             return removed;
         }
@@ -75,8 +77,20 @@ public class Deque<T extends Comparable<T>> {
     }
 
     public T getMin() {
-        if (minValue.isEmpty()) return null;
-        return minValue.get(minValue.size() - 1);
+        if (minHead.isEmpty() && minTail.isEmpty()) return null;
+        if (minHead.isEmpty()) return getMinTail();
+        if (minTail.isEmpty()) return getMinHead();
+        if (getMinHead().compareTo(getMinTail()) <= 0) {
+            return getMinHead();
+        } else return getMinTail();
+    }
+
+    private T getMinHead() {
+        return minHead.get(minHead.size() - 1);
+    }
+
+    private T getMinTail() {
+        return minTail.get(minTail.size() - 1);
     }
 
     public static boolean balance(String str) {
