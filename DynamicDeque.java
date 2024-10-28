@@ -1,55 +1,52 @@
 public class DynamicDeque<T> {
-    private T[] array;
+    private DynamicArray<T> dynamicArray;
     private int head;
     private int tail;
     private int size;
 
     public DynamicDeque() {
-        array = (T[]) new Object[8];
+        dynamicArray = new DynamicArray<>();
         head = 0;
         tail = 0;
         size = 0;
     }
 
-    private void resize() {
-        T[] newArray = (T[]) new Object[array.length * 2];
-
-        for (int i = 0; i < size; i++) {
-            newArray[i] = array[(head + i) % array.length];
+    private void resizeArray() {
+        if (size == dynamicArray.size()) {
+            dynamicArray.resize(size * 2, head, tail);
+            head = 0;
+            tail = size;
         }
-        array = newArray;
-        head = 0;
-        tail = size;
     }
 
     public void addFront(T item) {
-        if (size == array.length) resize();
-        head = (head - 1 + array.length) % array.length;
-        array[head] = item;
+        resizeArray();
+        head = (head - 1 + dynamicArray.size()) % dynamicArray.size();
+        dynamicArray.set(head, item);
         size++;
     }
 
     public void addTail(T item) {
-        if (size == array.length) resize();
-        array[tail] = item;
-        tail = (tail + 1) % array.length;
+        resizeArray();
+        dynamicArray.set(tail, item);
+        tail = (tail + 1) % dynamicArray.size();
         size++;
     }
 
     public T removeFront() {
         if (isEmpty()) return null;
-        T item = array[head];
-        array[head] = null;
-        head = (head + 1) % array.length;
+        T item = dynamicArray.get(head);
+        dynamicArray.set(head, null);
+        head = (head + 1) % dynamicArray.size();
         size--;
         return item;
     }
 
     public T removeTail() {
         if (isEmpty()) return null;
-        tail = (tail - 1 + array.length) % array.length;
-        T item = array[tail];
-        array[tail] = null;
+        tail = (tail - 1 + dynamicArray.size()) % dynamicArray.size();
+        T item = dynamicArray.get(tail);
+        dynamicArray.set(tail, null);
         size--;
         return item;
     }
@@ -60,6 +57,37 @@ public class DynamicDeque<T> {
 
     public boolean isEmpty() {
         return size == 0;
+    }
+}
+
+class DynamicArray<T> {
+    private T[] array;
+
+    public DynamicArray() {
+        array = (T[]) new Object[8];
+    }
+
+    public T get(int index) {
+        return array[index];
+    }
+
+    public void set(int index, T item) {
+        array[index] = item;
+    }
+
+    public void resize(int newCapacity, int head, int tail) {
+        T[] newArray = (T[]) new Object[newCapacity];
+        if (head < tail) {
+            System.arraycopy(array, head, newArray, 0, tail - head);
+        } else {
+            System.arraycopy(array, head, newArray, 0, array.length - head);
+            System.arraycopy(array, 0, newArray, array.length - head, tail);
+        }
+        array = newArray;
+    }
+
+    public int size() {
+        return array.length;
     }
 }
 

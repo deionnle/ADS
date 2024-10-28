@@ -58,9 +58,29 @@ public class DynamicDequeTest {
     @Test
     public void ResizeTest() {
         DynamicDeque<Integer> array = new DynamicDeque<>();
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 8; i++) {
             array.addTail(i);
         }
-        assertEquals(16, array.size());
+
+        array.removeFront();
+        array.removeFront();
+
+        array.addTail(8);
+        array.addTail(9);
+
+        array.addTail(10);
+
+        assertEquals(9, array.size());
+        assertEquals(2, array.removeFront());
+        assertEquals(3, array.removeFront());
+
+        assertEquals(4, array.removeFront());
+        assertEquals(5, array.removeFront());
+        assertEquals(6, array.removeFront());
+        assertEquals(7, array.removeFront());
+        assertEquals(8, array.removeFront());
+        assertEquals(9, array.removeFront());
+        assertEquals(10, array.removeFront());
+        assertTrue(array.isEmpty());
     }
 }
