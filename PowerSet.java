@@ -76,17 +76,17 @@ public class PowerSet {
 
     public boolean remove(String value) {
         int index = hashFun(value);
-        int startIndex = index;
-
-        while (slots[index] != null) {
-            if (slots[index].equals(value)) {
-                slots[index] = null;
+        if (slots[index] != null && slots[index].equals(value)) {
+            slots[index] = null;
+            count--;
+            return true;
+        }
+        for (int i = 0; i < length; i++) {
+            int probeIndex = (index + i) % length;
+            if (slots[probeIndex] != null && slots[probeIndex].equals(value)) {
+                slots[probeIndex] = null;
                 count--;
                 return true;
-            }
-            index = (index + step) % length;
-            if (index == startIndex) {
-                return false;
             }
         }
         return false;

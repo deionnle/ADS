@@ -51,11 +51,25 @@ public class PowerSetTest {
     @Test
     public void removeAndCheckTest() {
         PowerSet set = new PowerSet();
-        String item = "itemToRemove";
-        set.put(item);
-        assertTrue(set.remove(item));
-        assertFalse(set.remove(item));
-        assertFalse(set.get(item));
+        String itemToRemove = "itemToRemove";
+        String itemToKeep1 = "itemToKeep1";
+        String itemToKeep2 = "itemToKeep2";
+        set.put(itemToRemove);
+        set.put(itemToKeep1);
+        set.put(itemToKeep2);
+
+        assertTrue(set.get(itemToRemove));
+        assertTrue(set.get(itemToKeep1));
+        assertTrue(set.get(itemToKeep2));
+        assertEquals(3, set.size());
+
+        assertTrue(set.remove(itemToRemove));
+        assertFalse(set.get(itemToRemove));
+        assertFalse(set.remove(itemToRemove));
+        assertEquals(2, set.size());
+
+        assertTrue(set.get(itemToKeep1));
+        assertTrue(set.get(itemToKeep2));
     }
 
     @Test
