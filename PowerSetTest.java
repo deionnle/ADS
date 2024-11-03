@@ -205,4 +205,20 @@ public class PowerSetTest {
         assertTrue(setA.isSubset(setB));
         assertFalse(setB.isSubset(setA));
     }
+
+    @Test
+    void EqualsTest() {
+        PowerSet setA = new PowerSet();
+        PowerSet setB = new PowerSet();
+
+        setA.put("a");
+        setA.put("b");
+        setA.put("c");
+
+        setB.put("a");
+        setB.put("b");
+        setB.put("c");
+
+        assertTrue(setA.equals(setB));
+    }
 }

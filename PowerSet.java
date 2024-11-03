@@ -139,6 +139,17 @@ public class PowerSet {
         }
         return true;
     }
+
+    public boolean equals(PowerSet set2) {
+        if (this.size() != set2.size()) return false;
+
+        for (String slot : this.slots) {
+            if (slot != null && !set2.get(slot)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 
