@@ -132,11 +132,8 @@ public class PowerSet {
     }
 
     public boolean isSubset(PowerSet set2) {
-        if (this.size() == 0) {
-            return true;
-        }
-        for (String slot : this.slots) {
-            if (slot != null && !set2.get(slot)) {
+        for (String slot : set2.slots) {
+            if (slot != null && !get(slot)) {
                 return false;
             }
         }

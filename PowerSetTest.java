@@ -136,7 +136,7 @@ public class PowerSetTest {
         for (int i = 10; i < 20; i++) {
             set2.put("item" + i);
         }
-        assertTrue(set2.isSubset(set1));
+        assertTrue(set1.isSubset(set2));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class PowerSetTest {
         for (int i = 50; i < 150; i++) {
             set2.put("element" + i);
         }
-        assertFalse(set1.isSubset(set2));
+        assertFalse(set2.isSubset(set1));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class PowerSetTest {
         for (int i = 10000; i < 15000; i++) {
             set2.put("val" + i);
         }
-        assertTrue(set2.isSubset(set1));
+        assertTrue(set1.isSubset(set2));
     }
 
 
@@ -186,8 +186,8 @@ public class PowerSetTest {
         assertFalse(differenceSet.get("set4"));
         assertEquals(1, differenceSet.size());
 
-        assertFalse(setB.isSubset(setA));
         assertFalse(setA.isSubset(setB));
+        assertFalse(setB.isSubset(setA));
     }
 
     @Test
@@ -202,7 +202,7 @@ public class PowerSetTest {
         setB.put("set2");
         setB.put("set3");
 
-        assertTrue(setB.isSubset(setA));
-        assertFalse(setA.isSubset(setB));
+        assertTrue(setA.isSubset(setB));
+        assertFalse(setB.isSubset(setA));
     }
 }
