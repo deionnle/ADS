@@ -136,7 +136,7 @@ public class PowerSetTest {
         for (int i = 10; i < 20; i++) {
             set2.put("item" + i);
         }
-        assertTrue(set1.isSubset(set2));
+        assertTrue(set2.isSubset(set1));
     }
 
     @Test
@@ -162,6 +162,47 @@ public class PowerSetTest {
         for (int i = 10000; i < 15000; i++) {
             set2.put("val" + i);
         }
-        assertTrue(set1.isSubset(set2));
+        assertTrue(set2.isSubset(set1));
+    }
+
+
+    @Test
+    public void Subset2Test() {
+        PowerSet setA = new PowerSet();
+        PowerSet setB = new PowerSet();
+
+        setA.put("set1");
+        setA.put("set2");
+        setA.put("set3");
+
+        setB.put("set2");
+        setB.put("set3");
+        setB.put("set4");
+
+        PowerSet differenceSet = setA.difference(setB);
+        assertTrue(differenceSet.get("set1"));
+        assertFalse(differenceSet.get("set2"));
+        assertFalse(differenceSet.get("set3"));
+        assertFalse(differenceSet.get("set4"));
+        assertEquals(1, differenceSet.size());
+
+        assertFalse(setB.isSubset(setA));
+        assertFalse(setA.isSubset(setB));
+    }
+
+    @Test
+    public void Subset3Test() {
+        PowerSet setA = new PowerSet();
+        PowerSet setB = new PowerSet();
+
+        setA.put("set1");
+        setA.put("set2");
+        setA.put("set3");
+
+        setB.put("set2");
+        setB.put("set3");
+
+        assertTrue(setB.isSubset(setA));
+        assertFalse(setA.isSubset(setB));
     }
 }

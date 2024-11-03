@@ -62,13 +62,17 @@ public class PowerSet {
         int index = hashFun(value);
         int startIndex = index;
 
+        if (slots[index] == null) {
+            return false;
+        }
+
         while (slots[index] != null) {
             if (slots[index].equals(value)) {
                 return true;
             }
             index = (index + step) % length;
             if (index == startIndex) {
-                return false;
+                break;
             }
         }
         return false;
@@ -119,7 +123,7 @@ public class PowerSet {
 
     public PowerSet difference(PowerSet set2) {
         PowerSet diff = new PowerSet();
-        for (String slot : slots) {
+        for (String slot : this.slots) {
             if (slot != null && !set2.get(slot)) {
                 diff.put(slot);
             }
@@ -128,8 +132,11 @@ public class PowerSet {
     }
 
     public boolean isSubset(PowerSet set2) {
-        for (String slot : set2.slots) {
-            if (slot != null && !get(slot)) {
+        if (this.size() == 0) {
+            return true;
+        }
+        for (String slot : this.slots) {
+            if (slot != null && !set2.get(slot)) {
                 return false;
             }
         }
