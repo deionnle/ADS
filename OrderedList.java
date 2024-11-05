@@ -182,25 +182,13 @@ public class OrderedList<T>
     }
 
     public static <T> OrderedList<T> merge(OrderedList<T> list1, OrderedList<T> list2, boolean ascending) {
-        OrderedList<T> reverseList1;
-        OrderedList<T> reverseList2;
-
-        if (list1._ascending != ascending) {
-            reverseList1 = list1.revers();
-        } else {
-            reverseList1 = list1;
-        }
-
-        if (list2._ascending != ascending) {
-            reverseList2 = list2.revers();
-        } else {
-            reverseList2 = list2;
-        }
+        OrderedList<T> orderedList1 = list1._ascending == ascending ? list1 : list1.revers();
+        OrderedList<T> orderedList2 = list2._ascending == ascending ? list2 : list2.revers();
 
         OrderedList<T> reverse = new OrderedList<>(ascending);
 
-        Node<T> node1 = reverseList1.head;
-        Node<T> node2 = reverseList2.head;
+        Node<T> node1 = orderedList1.head;
+        Node<T> node2 = orderedList2.head;
 
         while (node1 != null && node2 != null) {
             if ((list1.compare(node1.value, node2.value) <= 0 && ascending) ||
@@ -243,23 +231,20 @@ public class OrderedList<T>
         Node<T> current = this.head;
 
         while (current != null) {
-            if (compare(current.value, subList.head.value) == 0 && checkSubList(current, subList.head)) {
+            Node<T> Node = current;
+            Node<T> subNode = subList.head;
+
+            while (Node != null && subNode != null && compare(Node.value, subNode.value) == 0) {
+                Node = Node.next;
+                subNode = subNode.next;
+            }
+
+            if (subNode == null) {
                 return true;
             }
             current = current.next;
         }
         return false;
-    }
-
-    private boolean checkSubList(Node<T> Node, Node<T> subNode) {
-        while (subNode != null) {
-            if (Node == null || compare(Node.value, subNode.value) != 0) {
-                return false;
-            }
-            Node = Node.next;
-            subNode = subNode.next;
-        }
-        return true;
     }
 
     public T findFrequentValue() {
@@ -288,19 +273,22 @@ public class OrderedList<T>
     public int findIndex(T value) {
         if (this.head == null) return -1;
 
-        int index = 0;
-        Node<T> current = this.head;
+        ArrayList<Node<T>> nodeList = getAll();
+        int left = 0;
+        int right = nodeList.size() - 1;
 
-        while (current != null) {
-            int val = compare(value, current.value);
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            Node<T> middleNode = nodeList.get(middle);
+            int cmp = compare(value, middleNode.value);
 
-            if (val == 0) {
-                return index;
-            } else if ((_ascending && val < 0) || (!_ascending && val > 0)) {
-                return -1;
+            if (cmp == 0) {
+                return middle;
+            } else if ((_ascending && cmp < 0) || (!_ascending && cmp > 0)) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
             }
-            current = current.next;
-            index ++;
         }
         return -1;
     }
