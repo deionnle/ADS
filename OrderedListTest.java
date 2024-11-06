@@ -94,8 +94,8 @@ public class OrderedListTest {
     @Test
     public void RemoveDuplicatesTest() {
         OrderedList<Integer> list = new OrderedList<>(true);
-        list.add(1);list.add(2);list.add(2);
-        list.add(3);list.add(3);list.add(3);
+        list.add(1); list.add(2); list.add(2); list.add(3);
+        list.add(3); list.add(3); list.add(3);
         list.add(4);
 
         list.removeDuplicates();
@@ -200,5 +200,90 @@ public class OrderedListTest {
         list.add(1);
         assertEquals(1, list.findIndex(2));
         assertEquals(-1, list.findIndex(4));
+    }
+
+    @Test
+    public void testDeleteFromEmptyList() {
+        OrderedList<Integer> list5 = new OrderedList<>(true);
+        list5.delete(1);
+        assertNull(list5.head);
+    }
+
+    @Test
+    public void testDeleteOnlyNode() {
+        OrderedList<Integer> list5 = new OrderedList<>(true);
+        list5.add(1);
+        list5.delete(1);
+        assertNull(list5.head);
+        assertNull(list5.tail);
+    }
+
+    @Test
+    public void testDeleteHead() {
+        OrderedList<Integer> list5 = new OrderedList<>(true);
+        list5.add(1);
+        list5.add(2);
+        list5.add(3);
+        list5.add(4);
+
+        list5.delete(1);
+        assertEquals(2, (int) list5.head.value);
+        assertEquals(3, (int) list5.head.next.value);
+        assertEquals(4, (int) list5.tail.value);
+    }
+
+    @Test
+    public void testDeleteTail() {
+        OrderedList<Integer> list5 = new OrderedList<>(true);
+        list5.add(1);
+        list5.add(2);
+        list5.add(3);
+        list5.add(4);
+
+        list5.delete(4);
+        assertEquals(3, (int) list5.tail.value);
+        assertNull(list5.tail.next);
+    }
+
+    @Test
+    public void delTest() {
+        OrderedList<Integer> list = new OrderedList<>(true);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        list.delete(3);
+
+        assertEquals(3, list.count());
+
+        assertEquals(2, list.head.next.value);
+        assertEquals(4, list.head.next.next.value);
+        assertNull(list.head.next.next.next);
+    }
+
+    @Test
+    public void OneDuplicatesTest() {
+        OrderedList<Integer> list = new OrderedList<>(true);
+
+        list.add(5);
+        list.add(5);
+        list.add(5);
+
+        list.removeDuplicates();
+        assertEquals(1, list.count());
+    }
+
+    @Test
+    public void NoDuplicatesTest() {
+        OrderedList<Integer> list = new OrderedList<>(true);
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        list.removeDuplicates();
+
+        assertEquals(3, list.count());
     }
 }
