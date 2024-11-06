@@ -54,4 +54,93 @@ public class HashTableTest {
             int foundSlot2 = table.find("java");
             assertEquals("java", table.slots[foundSlot2]);
         }
+
+
+    @Test
+    void Resize1Test() {
+        HashTable hashTable = new HashTable(2, 1);
+
+        hashTable.put("A");
+        hashTable.put("B");
+
+        assertEquals(2, hashTable.size);
+
+        hashTable.put("C");
+        assertEquals(4, hashTable.size);
+
+        assertNotEquals(-1, hashTable.find("A"));
+        assertNotEquals(-1, hashTable.find("B"));
+        assertNotEquals(-1, hashTable.find("C"));
     }
+
+    @Test
+    void Resize2Test() {
+        HashTable hashTable = new HashTable(2, 1);
+
+        assertEquals(2, hashTable.size);
+        hashTable.put("A");
+        hashTable.put("B");
+
+        assertEquals(2, hashTable.size);
+        assertNotEquals(-1, hashTable.find("A"));
+        assertNotEquals(-1, hashTable.find("B"));
+    }
+
+    @Test
+    void Resize3Test() {
+        HashTable hashTable = new HashTable(4, 1);
+
+        hashTable.put("A");
+        hashTable.put("B");
+        hashTable.put("C");
+        hashTable.put("D");
+
+        assertEquals(4, hashTable.size);
+
+        hashTable.put("E");
+        assertEquals(8, hashTable.size);
+    }
+
+    @Test
+    public void Salt1Test() {
+        HashTable table = new HashTable(17, 3);
+
+        int hash1 = table.hashFun("AA");
+        int hash2 = table.hashFun("BB");
+        int hash3 = table.hashFun("CC");
+
+        assertNotEquals(hash1, hash2);
+        assertNotEquals(hash1, hash3);
+        assertNotEquals(hash2, hash3);
+    }
+
+    @Test
+    public void CollisionTest() {
+        HashTable table = new HashTable(7, 1);
+
+        int index1 = table.put("Key1");
+        int index2 = table.put("Key2");
+        int index3 = table.put("Key3");
+
+        assertNotEquals(-1, index1);
+        assertNotEquals(-1, index2);
+        assertNotEquals(-1, index3);
+
+        assertEquals(index1, table.find("Key1"));
+        assertEquals(index2, table.find("Key2"));
+        assertEquals(index3, table.find("Key3"));
+    }
+
+    @Test
+    public void DDoSAttackTest() {
+        HashTable table = new HashTable(11, 1);
+
+        String[] Keys = {"AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK"};
+
+        for (String key : Keys) {
+            int index = table.put(key);
+            assertNotEquals(-1, index);
+            assertEquals(index, table.find(key));
+        }
+    }
+}
