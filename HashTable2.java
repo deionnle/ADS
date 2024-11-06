@@ -23,7 +23,7 @@ public class HashTable2 {
     }
 
     public int hashFun2(String value) {
-        int hash = 0;
+        int hash = 17;
         for (int i = 0; i < value.length(); i++) {
             hash = (hash * 31 + value.charAt(i));
         }
