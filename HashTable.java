@@ -50,7 +50,11 @@ public class HashTable {
     }
 
     public int put(String value) {
-        check();
+        if (slots.getCount() >= slots.getSize() * 0.8) {
+            slots.resize();
+            size = slots.getSize();
+        }
+
         String saltValue = generateSalt(value);
         int index = seekSlot(saltValue);
         if (index != -1) {
@@ -78,27 +82,6 @@ public class HashTable {
         }
 
         return -1;
-    }
-
-    public void check() {
-        if (slots.getCount() >= slots.getSize() * 0.8) {
-            resize();
-        }
-    }
-
-    public void resize() {
-        int newSize = size * 2;
-        DynamicArrays newSlots = new DynamicArrays(newSize);
-
-        for (int i = 0; i < slots.getSize(); i++) {
-            String value = slots.get(i);
-            if (value != null) {
-                int newIndex = seekSlot(value);
-                newSlots.set(newIndex, value);
-            }
-        }
-        slots = newSlots;
-        size = newSize;
     }
 }
 
@@ -132,5 +115,12 @@ class DynamicArrays {
             count--;
         }
         array[index] = value;
+    }
+
+    public void resize() {
+        String[] newArray = new String[size * 2];
+        System.arraycopy(array, 0, newArray, 0, size);
+        array = newArray;
+        size *= 2;
     }
 }

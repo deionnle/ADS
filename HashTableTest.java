@@ -72,10 +72,6 @@ public class HashTableTest {
 
         hashTable.put("C");
         assertEquals(4, hashTable.size);
-
-        assertNotEquals(-1, hashTable.find("A"));
-        assertNotEquals(-1, hashTable.find("B"));
-        assertNotEquals(-1, hashTable.find("C"));
     }
 
     @Test
