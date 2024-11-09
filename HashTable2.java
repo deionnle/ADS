@@ -1,14 +1,26 @@
+import java.util.HashMap;
+import java.util.Random;
+import java.util.function.Function;
+
 public class HashTable2 {
     public int size;
     public int step;
     private int count;
     public String[] slots;
+    private final HashMap<Integer, Function<String, Integer>> hashFuns;
+    private final Random rand;
 
     public HashTable2(int sz, int stp) {
         size = sz;
         step = stp;
         count = 0;
         slots = new String[size];
+        rand = new Random();
+        hashFuns = new HashMap<>();
+
+        hashFuns.put(1, this::hashFun1);
+        hashFuns.put(2, this::hashFun2);
+
         for (int i = 0; i < size; i++) {
             slots[i] = null;
         }
@@ -30,16 +42,13 @@ public class HashTable2 {
         return Math.abs(hash % size);
     }
 
-    public int hashFun(String value, int num) {
-        if (num % 2 == 0) {
-            return hashFun1(value);
-        } else {
-            return hashFun2(value);
-        }
+    public int hashFun(String value) {
+        int num = rand.nextInt(hashFuns.size()) + 1;
+        return hashFuns.get(num).apply(value);
     }
 
     public int seekSlot(String value) {
-        int index = hashFun(value, 0);
+        int index = hashFun(value);
         int startIndex = index;
 
         while (slots[index] != null) {
@@ -65,7 +74,7 @@ public class HashTable2 {
     }
 
     public int find(String value) {
-        int index = hashFun(value, 0);
+        int index = hashFun(value);
         int startIndex = index;
 
         while (slots[index] != null) {

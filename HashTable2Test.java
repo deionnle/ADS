@@ -37,30 +37,15 @@ public class HashTable2Test {
     }
 
     @Test
-    public void hashFunTest() {
-        String value1 = "One";
-        String value2 = "Two";
-        String value3 = "Three";
-
-        int hash1 = table.hashFun(value1, 0);
-        int hash2 = table.hashFun(value2, 1);
-        int hash3 = table.hashFun(value3, 2);
-
-        assertEquals(hash1, table.hashFun1(value1));
-        assertEquals(hash3, table.hashFun1(value3));
-        assertEquals(hash2, table.hashFun2(value2));
-    }
-
-    @Test
     public void hashFunFullTest() {
         String value = "Test";
 
-        int hash1 = table.hashFun(value, 0);
-        int hash2 = table.hashFun(value, 2);
+        int hash1 = table.hashFun(value);
+        int hash2 = table.hashFun(value);
         assertEquals(hash1, hash2);
 
-        int hash3 = table.hashFun(value, 1);
-        int hash4 = table.hashFun(value, 3);
+        int hash3 = table.hashFun(value);
+        int hash4 = table.hashFun(value);
         assertEquals(hash3, hash4);
     }
 }
