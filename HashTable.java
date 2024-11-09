@@ -10,7 +10,7 @@ public class HashTable {
     public HashTable(int sz, int stp) {
         size = sz;
         step = stp;
-        slots = new DynamicArrays(size, this);
+        slots = new DynamicArrays(size);
         salts = new HashMap<>();
     }
 
@@ -50,7 +50,7 @@ public class HashTable {
     }
 
     public int put(String value) {
-        slots.check();
+        check();
         String saltValue = generateSalt(value);
         int index = seekSlot(saltValue);
         if (index != -1) {
@@ -69,7 +69,7 @@ public class HashTable {
 
         String saltValue = salt + "_" + value;
         int index = seekSlot(saltValue);
-        if (index == -1) {
+        if (index == -1 || slots.get(index) == null) {
             return -1;
         }
 
@@ -79,19 +79,38 @@ public class HashTable {
 
         return -1;
     }
+
+    public void check() {
+        if (slots.getCount() >= slots.getSize() * 0.8) {
+            resize();
+        }
+    }
+
+    public void resize() {
+        int newSize = size * 2;
+        DynamicArrays newSlots = new DynamicArrays(newSize);
+
+        for (int i = 0; i < slots.getSize(); i++) {
+            String value = slots.get(i);
+            if (value != null) {
+                int newIndex = seekSlot(value);
+                newSlots.set(newIndex, value);
+            }
+        }
+        slots = newSlots;
+        size = newSize;
+    }
 }
 
 class DynamicArrays {
     private String[] array;
     private int size;
     private int count;
-    private HashTable table;
 
-    public DynamicArrays(int hashSize, HashTable table) {
-        array = new String[hashSize];
-        this.size = hashSize;
+    public DynamicArrays(int getSize) {
+        array = new String[getSize];
+        this.size = getSize;
         count = 0;
-        this.table = table;
     }
 
     public int getSize() {
@@ -102,6 +121,10 @@ class DynamicArrays {
         return array[index];
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public void set(int index, String value) {
         if (array[index] == null && value != null) {
             count++;
@@ -109,28 +132,5 @@ class DynamicArrays {
             count--;
         }
         array[index] = value;
-    }
-
-    public void check() {
-        if (count >= size * 0.8) {
-            resize(size * 2);
-        }
-    }
-
-    private void resize(int newSize) {
-        String[] oldArray = array;
-        size = newSize;
-        array = new String[size];
-        count = 0;
-
-        table.size = newSize;
-
-        for (String value : oldArray) {
-            if (value != null) {
-                int newIndex = table.seekSlot(value);
-                array[newIndex] = value;
-                count++;
-            }
-        }
     }
 }

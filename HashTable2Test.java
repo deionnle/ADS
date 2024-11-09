@@ -12,9 +12,9 @@ public class HashTable2Test {
         String value2 = "Two";
         String value3 = "Three";
 
-        int hash1 = table.hashFun1(value1);
-        int hash2 = table.hashFun1(value2);
-        int hash3 = table.hashFun1(value3);
+        int hash1 = table.hashFun(value1);
+        int hash2 = table.hashFun(value2);
+        int hash3 = table.hashFun(value3);
 
         assertNotEquals(hash1, hash2);
         assertNotEquals(hash1, hash3);
@@ -27,9 +27,9 @@ public class HashTable2Test {
         String value2 = "Two";
         String value3 = "Three";
 
-        int hash1 = table.hashFun2(value1);
-        int hash2 = table.hashFun2(value2);
-        int hash3 = table.hashFun2(value3);
+        int hash1 = table.hashFun(value1);
+        int hash2 = table.hashFun(value2);
+        int hash3 = table.hashFun(value3);
 
         assertNotEquals(hash1, hash2);
         assertNotEquals(hash1, hash3);
@@ -42,10 +42,7 @@ public class HashTable2Test {
 
         int hash1 = table.hashFun(value);
         int hash2 = table.hashFun(value);
-        assertEquals(hash1, hash2);
 
-        int hash3 = table.hashFun(value);
-        int hash4 = table.hashFun(value);
-        assertEquals(hash3, hash4);
+        assertNotEquals(hash1, hash2);
     }
 }

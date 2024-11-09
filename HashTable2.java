@@ -18,28 +18,25 @@ public class HashTable2 {
         rand = new Random();
         hashFuns = new HashMap<>();
 
-        hashFuns.put(1, this::hashFun1);
-        hashFuns.put(2, this::hashFun2);
+        hashFuns.put(1, (String value) -> {
+            int hash = 0;
+            for (int i = 0; i < value.length(); i++) {
+                hash += value.charAt(i);
+            }
+            return Math.abs(hash % size);
+        });
+
+        hashFuns.put(2, (String value) -> {
+            int hash = 17;
+            for (int i = 0; i < value.length(); i++) {
+                hash = (hash * 31 + value.charAt(i));
+            }
+            return Math.abs(hash % size);
+        });
 
         for (int i = 0; i < size; i++) {
             slots[i] = null;
         }
-    }
-
-    public int hashFun1(String value) {
-        int hash = 0;
-        for (int i = 0; i < value.length(); i++) {
-            hash += value.charAt(i);
-        }
-        return Math.abs(hash % size);
-    }
-
-    public int hashFun2(String value) {
-        int hash = 17;
-        for (int i = 0; i < value.length(); i++) {
-            hash = (hash * 31 + value.charAt(i));
-        }
-        return Math.abs(hash % size);
     }
 
     public int hashFun(String value) {
