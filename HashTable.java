@@ -53,6 +53,7 @@ public class HashTable {
         if (slots.getCount() >= slots.getSize() * 0.8) {
             slots.resize();
             size = slots.getSize();
+            rehash();
         }
 
         String saltValue = generateSalt(value);
@@ -82,6 +83,23 @@ public class HashTable {
         }
 
         return -1;
+    }
+
+    private void rehash() {
+        DynamicArrays newSlots = new DynamicArrays(size);
+
+        for (int i = 0; i < slots.getSize(); i++) {
+            String value = slots.get(i);
+            if (value != null) {
+                int index = hashFun(value);
+                while (newSlots.get(index) != null) {
+                    index = (index + 1) % size;
+                }
+                newSlots.set(index, value);
+            }
+        }
+
+        slots = newSlots;
     }
 }
 
