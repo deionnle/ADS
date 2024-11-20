@@ -1,5 +1,9 @@
 import org.junit.jupiter.api.Test;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PowerSetTest {
@@ -220,5 +224,47 @@ public class PowerSetTest {
         setB.put("c");
 
         assertTrue(setA.equals(setB));
+    }
+
+    @Test
+    public void CartesianProductTest() {
+        PowerSet set1 = new PowerSet();
+        PowerSet set2 = new PowerSet();
+
+        set1.put("A");
+        set1.put("B");
+        set2.put("1");
+        set2.put("2");
+
+        PowerSet expected = new PowerSet();
+        expected.put("(A, 1)");
+        expected.put("(A, 2)");
+        expected.put("(B, 1)");
+        expected.put("(B, 2)");
+
+        PowerSet result = set1.cartesianProduct(set2);
+        assertEquals(expected.size(), result.size());
+    }
+
+    @Test
+    public void MultiIntersectionTest() {
+        PowerSet set1 = new PowerSet();
+        set1.put("a");set1.put("b");set1.put("c");
+
+        PowerSet set2 = new PowerSet();
+        set2.put("b");set2.put("c");set2.put("d");
+
+        PowerSet set3 = new PowerSet();
+        set3.put("c");set3.put("d");set3.put("e");
+
+        List<PowerSet> sets = Arrays.asList(set1, set2, set3);
+
+        PowerSet result = PowerSet.multiIntersection(sets);
+
+        assertEquals(1, result.size());
+        assertTrue(result.get("c"));
+        assertFalse(result.get("b"));
+        assertFalse(result.get("d"));
+        assertFalse(result.get("a"));
     }
 }
