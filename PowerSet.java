@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class PowerSet {
     private String[] slots;
     private int count;
@@ -149,6 +151,36 @@ public class PowerSet {
             }
         }
         return true;
+    }
+
+    public PowerSet cartesianProduct(PowerSet set2) {
+        PowerSet result = new PowerSet();
+
+        for (String elementA : this.slots) {
+            if (elementA == null) continue;
+
+            for (String elementB : set2.slots) {
+                if (elementB != null) {
+                    result.put("(" + elementA + "; " + elementB + ")");
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static PowerSet multiIntersection(List<PowerSet> sets) {
+        if (sets == null || sets.size() < 3) {
+            throw new IllegalArgumentException("Должно быть минимум 3 множества");
+        }
+
+        PowerSet result = sets.get(0).intersection(sets.get(1));
+
+        for (int i = 2; i < sets.size(); i++) {
+            result = result.intersection(sets.get(i));
+        }
+
+        return result;
     }
 }
 
