@@ -1,45 +1,42 @@
+import java.util.List;
+import java.util.function.Function;
+
 public class BloomFilter2 {
     private final int filter_len;
     private final int[] count;
+    private final List<Function<String, Integer>> hashFunctions;
 
-    public BloomFilter2 (int f_len) {
+    public BloomFilter2 (int f_len, List<Function<String, Integer>> hashFunctions) {
         filter_len = f_len;
         count = new int[f_len];
+        this.hashFunctions = hashFunctions;
     }
 
-    public int hash1(String str1) {
-        int hash = 0;
-        for (int i = 0; i < str1.length(); i++) {
-            int code = str1.charAt(i);
-            hash = (hash * 17 + code) % filter_len;
-        }
-        return Math.abs(hash);
-    }
-
-    public int hash2(String str1) {
-        int hash = 0;
-        for (int i = 0; i < str1.length(); i++) {
-            int code = str1.charAt(i);
-            hash = (hash * 223 + code) % filter_len;
-        }
-        return Math.abs(hash);
+    public int hashFun(Function<String, Integer> hashFunction, String value) {
+        return Math.abs(hashFunction.apply(value)) % filter_len;
     }
 
     public void add(String str1) {
-        count[hash1(str1)]++;
-        count[hash2(str1)]++;
+        for (Function<String, Integer> hashFunction : hashFunctions) {
+            count[hashFun(hashFunction, str1)]++;
+        }
     }
 
     public void remove(String str1) {
-        if (count[hash1(str1)] > 0) {
-            count[hash1(str1)]--;
-        }
-        if (count[hash2(str1)] > 0) {
-            count[hash2(str1)]--;
+        for (Function<String, Integer> hashFunction : hashFunctions) {
+            int index = hashFun(hashFunction, str1);
+            if (count[index] > 0) {
+                count[index]--;
+            }
         }
     }
 
     public boolean isValue(String str1) {
-        return count[hash1(str1)] > 0 && count[hash2(str1)] > 0;
+        for (Function<String, Integer> hashFunction : hashFunctions) {
+            if (count[hashFun(hashFunction, str1)] <= 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
