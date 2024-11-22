@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class BloomFilter
 {
     public int filter_len;
@@ -55,5 +57,16 @@ public class BloomFilter
             mergedFilter.bitArray |= filter.bitArray;
         }
         return mergedFilter;
+    }
+
+    public static HashSet<String> recoverSet(BloomFilter filter, HashSet<String> originalSet) {
+        HashSet<String> recoveredSet = new HashSet<>();
+
+        for (String element : originalSet) {
+            if (filter.isValue(element)) {
+                recoveredSet.add(element);
+            }
+        }
+        return recoveredSet;
     }
 }
