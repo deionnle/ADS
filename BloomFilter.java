@@ -59,14 +59,35 @@ public class BloomFilter
         return mergedFilter;
     }
 
-    public static HashSet<String> recoverSet(BloomFilter filter, HashSet<String> originalSet) {
+    public static HashSet<String> recoverSet(BloomFilter filter, int maxLen, String abc) {
         HashSet<String> recoveredSet = new HashSet<>();
 
-        for (String element : originalSet) {
+        HashSet<String> strings = generateStrings(maxLen, abc);
+        for (String element : strings) {
             if (filter.isValue(element)) {
                 recoveredSet.add(element);
             }
         }
+//        System.out.println("Восстановленное множество: " + recoveredSet);
+//        System.out.println(recoveredSet.size() + " Элементов");
         return recoveredSet;
+    }
+
+    public static HashSet<String> generateStrings(int maxLen, String abc) {
+        HashSet<String> result = new HashSet<>();
+        for (int len = 1; len <= maxLen; len++) {
+            getCombinations("", len, abc, result);
+        }
+        return result;
+    }
+
+    private static void getCombinations(String prefix, int length, String abc, HashSet<String> result) {
+        if (length == 0) {
+            result.add(prefix);
+            return;
+        }
+        for (int i = 0; i < abc.length(); i++) {
+            getCombinations(prefix + abc.charAt(i), length - 1, abc, result);
+        }
     }
 }

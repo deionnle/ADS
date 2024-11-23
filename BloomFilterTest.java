@@ -59,28 +59,15 @@ public class BloomFilterTest {
     @Test
     public void RecoverSetTest() {
         BloomFilter filter = new BloomFilter(32);
-        filter.add("string1");
-        filter.add("string2");
-        filter.add("string3");
 
-        HashSet<String> original = new HashSet<>();
-        original.add("string1");
-        original.add("string2");
-        original.add("string3");
-        original.add("string4");
-        original.add("string5");
-        original.add("string6");
+        filter.add("cat");
+        filter.add("dogs");
 
-        HashSet<String> recovered = BloomFilter.recoverSet(filter, original);
+        HashSet<String> recovered = (HashSet<String>) BloomFilter.recoverSet(filter, 4, "abcdefghijklmnopqrstuvwxyz");
 
-        assertTrue(recovered.contains("string1"));
-        assertTrue(recovered.contains("string2"));
-        assertTrue(recovered.contains("string3"));
+        assertTrue(recovered.contains("cat"));
+        assertTrue(recovered.contains("dogs"));
 
-        assertFalse(recovered.contains("string4"));
-        assertFalse(recovered.contains("string5"));
-        assertFalse(recovered.contains("string6"));
-
-        assertEquals(3, recovered.size());
+        assertFalse(recovered.contains("bat"));
     }
 }
